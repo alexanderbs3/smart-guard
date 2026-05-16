@@ -1,10 +1,10 @@
 package br.leetjourney.smartguard.interfaces.rest;
 
-import br.leetjourney.smartguard.application.dto.AuditEventResponse;
-import br.leetjourney.smartguard.application.dto.IngestEventRequest;
+import br.leetjourney.smartguard.application.dto.event.AuditEventResponse;
+import br.leetjourney.smartguard.application.dto.event.IngestEventRequest;
 import br.leetjourney.smartguard.domain.model.User;
-import br.leetjourney.smartguard.domain.service.IngestEventService;
-import br.leetjourney.smartguard.domain.service.QueryEventService;
+import br.leetjourney.smartguard.application.service.IngestEventService;
+import br.leetjourney.smartguard.application.service.QueryEventService;
 import br.leetjourney.smartguard.infrastructure.multitenancy.TenantContext;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

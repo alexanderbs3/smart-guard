@@ -1,9 +1,9 @@
 package br.leetjourney.smartguard.interfaces.rest;
 
-import br.leetjourney.smartguard.application.dto.AlertNotification;
+import br.leetjourney.smartguard.application.dto.alert.AlertNotification;
 import br.leetjourney.smartguard.domain.model.Alert;
 import br.leetjourney.smartguard.domain.model.User;
-import br.leetjourney.smartguard.domain.service.AlertService;
+import br.leetjourney.smartguard.application.service.AlertService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -13,7 +13,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate       # Flyway cuida do schema, JPA só valida
+      ddl-auto: none       # Flyway cuida do schema, JPA só valida
     show-sql: false
     properties:
       hibernate:
