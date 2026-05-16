@@ -1,10 +1,4 @@
--- ============================================================
--- V5 — Seed de Regras de Detecção Padrão (System Tenant)
--- Inseridas apenas como referência — cada tenant cria as suas.
--- Em produção, o onboarding de tenant via API copia estas regras.
--- ============================================================
 
--- Garante que existe um tenant de sistema para as regras seed
 INSERT INTO tenants (id, name, slug, plan, active)
 VALUES ('00000000-0000-0000-0000-000000000001', 'SmartGuard System', 'smartguard-system', 'ENTERPRISE', true)
     ON CONFLICT (slug) DO NOTHING;
