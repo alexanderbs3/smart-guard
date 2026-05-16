@@ -1,6 +1,6 @@
 package br.leetjourney.smartguard.interfaces.rest;
 
-import br.leetjourney.smartguard.application.dto.AuthRequest;
+import br.leetjourney.smartguard.application.dto.auth.AuthRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
