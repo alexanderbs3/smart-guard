@@ -1,9 +1,9 @@
 package br.leetjourney.smartguard.infrastructure.messaging;
 
 
-import br.leetjourney.smartguard.application.dto.IngestEventRequest;
-import br.leetjourney.smartguard.domain.service.IngestEventService;
-import io.swagger.v3.oas.annotations.headers.Header;
+import br.leetjourney.smartguard.application.dto.event.IngestEventRequest;
+import br.leetjourney.smartguard.application.service.IngestEventService;
+import org.springframework.messaging.handler.annotation.Header;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
