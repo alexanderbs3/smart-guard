@@ -1,15 +1,15 @@
 package br.leetjourney.smartguard.application.service;
 
 
-import br.leetjourney.smartguard.application.dto.AuthRequest;
-import br.leetjourney.smartguard.application.dto.AuthResponse;
+import br.leetjourney.smartguard.application.dto.auth.AuthRequest;
+import br.leetjourney.smartguard.application.dto.auth.AuthResponse;
 import br.leetjourney.smartguard.domain.model.Tenant;
 import br.leetjourney.smartguard.domain.model.User;
 import br.leetjourney.smartguard.domain.repository.TenantRepository;
 import br.leetjourney.smartguard.domain.repository.UserRepository;
 
-import br.leetjourney.smartguard.interfaces.exception.BusinessException;
-import br.leetjourney.smartguard.interfaces.security.JwtService;
+import br.leetjourney.smartguard.interfaces.rest.exception.BusinessException;
+import br.leetjourney.smartguard.infrastructure.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.errors.ResourceNotFoundException;

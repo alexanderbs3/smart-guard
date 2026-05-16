@@ -1,9 +1,9 @@
 package br.leetjourney.smartguard.interfaces.rest;
 
 
-import br.leetjourney.smartguard.application.dto.AuthRequest;
-import br.leetjourney.smartguard.application.dto.AuthResponse;
-import br.leetjourney.smartguard.domain.service.AuthService;
+import br.leetjourney.smartguard.application.dto.auth.AuthRequest;
+import br.leetjourney.smartguard.application.dto.auth.AuthResponse;
+import br.leetjourney.smartguard.application.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
