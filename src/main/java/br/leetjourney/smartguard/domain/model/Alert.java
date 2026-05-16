@@ -36,7 +36,7 @@ public class Alert {
     @Column(name = "risk_level", nullable = false, length = 20)
     private AuditEvent.RiskLevel riskLevel;
 
-    @Column(name = "risk_score", nullable = false)
+    @Column(name = "risk_score", nullable = false, columnDefinition = "smallint")
     private int riskScore;
 
     @Column(nullable = false, length = 255)

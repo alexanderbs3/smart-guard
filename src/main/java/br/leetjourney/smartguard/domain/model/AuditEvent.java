@@ -78,7 +78,7 @@ public class AuditEvent {
     private String previousHash;
 
     // ── Risk ─────────────────────────────────────────────────
-    @Column(name = "risk_score", nullable = false)
+    @Column(name = "risk_score", nullable = false, columnDefinition = "smallint")
     @Builder.Default
     private int riskScore = 0;
 
