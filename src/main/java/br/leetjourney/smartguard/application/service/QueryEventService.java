@@ -1,7 +1,7 @@
 package br.leetjourney.smartguard.application.service;
 
 
-import br.leetjourney.smartguard.application.dto.AuditEventResponse;
+import br.leetjourney.smartguard.application.dto.event.AuditEventResponse;
 import br.leetjourney.smartguard.domain.repository.AuditEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,13 +1,13 @@
 package br.leetjourney.smartguard.application.service;
 
-import br.leetjourney.smartguard.application.dto.AlertNotification;
+import br.leetjourney.smartguard.application.dto.alert.AlertNotification;
 import br.leetjourney.smartguard.domain.model.Alert;
 import br.leetjourney.smartguard.domain.model.AuditEvent;
 import br.leetjourney.smartguard.domain.repository.AlertRepository;
 import br.leetjourney.smartguard.domain.service.ruleengine.RuleViolation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.errors.ResourceNotFoundException;
+import br.leetjourney.smartguard.interfaces.rest.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

@@ -1,10 +1,11 @@
 package br.leetjourney.smartguard.application.service;
 
-
-import br.leetjourney.smartguard.application.dto.AuditEventResponse;
-import br.leetjourney.smartguard.application.dto.IngestEventRequest;
+import br.leetjourney.smartguard.application.dto.event.AuditEventResponse;
+import br.leetjourney.smartguard.application.dto.event.IngestEventRequest;
 import br.leetjourney.smartguard.domain.model.AuditEvent;
 import br.leetjourney.smartguard.domain.repository.AuditEventRepository;
+import br.leetjourney.smartguard.domain.service.HashChainService;
+import br.leetjourney.smartguard.domain.service.RiskScoreService;
 import br.leetjourney.smartguard.domain.service.ruleengine.RuleEngine;
 import br.leetjourney.smartguard.domain.service.ruleengine.RuleViolation;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -38,46 +39,31 @@ public class IngestEventService {
                 ? request.occurredAt()
                 : OffsetDateTime.now();
 
-        // ── 1. Hash anterior da cadeia ────────────────────────
         String previousHash = hashChainService.getLatestHash(tenantId);
-
-        // ── 2. Proto-evento para computar o hash ──────────────
         AuditEvent proto = buildProto(tenantId, request, previousHash, occurredAt);
         String eventHash = hashChainService.computeHash(previousHash, proto);
 
-        // ── 3. Idempotência ───────────────────────────────────
         if (auditEventRepository.existsByEventHash(eventHash)) {
             log.warn("Evento duplicado ignorado: hash={}", eventHash);
             meterRegistry.counter("smartguard.events.duplicate").increment();
-            return auditEventRepository
-                    .findAll()
-                    .stream()
+            return auditEventRepository.findAll().stream()
                     .filter(e -> e.getEventHash().equals(eventHash))
                     .findFirst()
                     .map(AuditEventResponse::from)
                     .orElseThrow();
         }
 
-        // ── 4. Risk score via Redis ───────────────────────────
         int riskScore = riskScoreService.recordAndScore(tenantId, request.actorId(), UUID.randomUUID());
         AuditEvent.RiskLevel riskLevel = AuditEvent.RiskLevel.fromScore(riskScore);
+        AuditEvent saved = auditEventRepository.save(buildFinal(proto, eventHash, riskScore, riskLevel));
 
-        // ── 5. Persiste evento ────────────────────────────────
-        AuditEvent saved = auditEventRepository.save(
-                buildFinal(proto, eventHash, riskScore, riskLevel)
-        );
-
-        // ── 6. Rule Engine ────────────────────────────────────
         List<RuleViolation> violations = ruleEngine.evaluate(saved);
-
-        // ── 7. Alertas + WebSocket (assíncrono para não bloquear ingestão) ─
         if (!violations.isEmpty()) {
             alertService.createFromViolations(saved, violations, riskScore);
             meterRegistry.counter("smartguard.alerts.triggered",
                     "tenant", tenantId.toString()).increment();
         }
 
-        // ── 8. Métricas ───────────────────────────────────────
         meterRegistry.counter("smartguard.events.ingested",
                 "tenant", tenantId.toString(),
                 "risk_level", riskLevel.name()
@@ -91,7 +77,7 @@ public class IngestEventService {
     }
 
     private AuditEvent buildProto(UUID tenantId, IngestEventRequest req,
-                                  String previousHash, OffsetDateTime occurredAt) {
+                                   String previousHash, OffsetDateTime occurredAt) {
         return AuditEvent.builder()
                 .tenantId(tenantId)
                 .actorId(req.actorId())
@@ -109,7 +95,7 @@ public class IngestEventService {
     }
 
     private AuditEvent buildFinal(AuditEvent proto, String eventHash,
-                                  int riskScore, AuditEvent.RiskLevel riskLevel) {
+                                   int riskScore, AuditEvent.RiskLevel riskLevel) {
         return AuditEvent.builder()
                 .tenantId(proto.getTenantId())
                 .actorId(proto.getActorId())
